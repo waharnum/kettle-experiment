@@ -1,9 +1,12 @@
 var fluid = require('infusion');
 var kettle = require('kettle');
+
 var examples = fluid.registerNamespace("examples");
+
 var apps = require('./src/apps');
 var datasources = require('./src/datasources');
 var middleware = require('./src/middleware');
+
 
 fluid.defaults("examples.server", {
     gradeNames: "fluid.component",

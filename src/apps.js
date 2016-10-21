@@ -1,4 +1,8 @@
 var examples = fluid.registerNamespace("examples");
+var pug = require('pug');
+
+// pug page template
+var pageTemplate = pug.compileFile("templates/page.pug");
 
 fluid.defaults("examples.app.echoer", {
     gradeNames: "kettle.app",
@@ -20,9 +24,7 @@ fluid.defaults("examples.app.echoHandler", {
 
 examples.app.handleEcho = function (request) {
     var toEcho = request.req.params.toEcho;
-    request.events.onSuccess.fire({
-        message: toEcho
-    });
+    request.events.onSuccess.fire(pageTemplate({obj: toEcho}));
 };
 
 fluid.defaults("examples.app.adder", {
@@ -48,9 +50,7 @@ examples.app.handleAdder = function (request) {
     var left = Number(params.left),
         right = Number(params.right);
     var sum = left + right;
-    request.events.onSuccess.fire({
-        message: sum
-    });
+    request.events.onSuccess.fire(pageTemplate({obj: sum}));
 };
 
 fluid.defaults("examples.app.couchGet", {
@@ -79,18 +79,10 @@ examples.app.handleCouchGet = function (request) {
     var promise = couchDataSource.get({directUserId: userId});
 
     promise.then(function (response) {
-        request.events.onSuccess.fire({
-            message: response
-        });
+        request.events.onSuccess.fire(pageTemplate({obj: response}));
     }, function (error) {
-        request.events.onError.fire({
-            message: error
-        });
+        request.events.onError.fire(pageTemplate({obj: error}));
     });
 
 
-};
-
-examples.app.wrapJSONResponse = function (json) {
-    return "<pre><code>" + json + "</code></pre>";
 };
